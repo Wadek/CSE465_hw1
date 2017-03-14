@@ -56,20 +56,16 @@ public class Cse465_hw1 {
 						for(int i = index; i < skeys.get(id).length;i++) {
                                                     System.out.println("(i = "+ i +") "+skeys.get(id)[i]);
                                                     
-                                                }
-                                                System.out.println("\n"+id + " has been authenticated");
-						System.out.println("\nWelcome back to the simulated db\n");
-						System.out.println("logging out...");
+                                                }                                               
 						if(db.get(id).equals(getSeed(id))){
-							System.out.println("\nNote: You have no more authentifications remaining. Please Re-register.");
+							System.out.println("All passwords used. Register new user.");
 							db.remove(id);
 							skeys.remove(id);
 							mainMenu();
 							continue;
 						}
 					} 
-					else{
-						System.out.println("\nIncorrect password, Try again."); 
+					else{ 
 						System.out.println("Attempt #: " + challenge + " out of 3");
 						challenge++;
 						System.out.println("Enter password (i="+ index  +"): \n");
@@ -78,7 +74,7 @@ public class Cse465_hw1 {
 				}//end while
 			}else{
 				//register(id);
-				System.out.println("ID does not exist. Please Register.");
+				System.out.println("ID does not exist.");
 				mainMenu();
 			}
 		}	
@@ -86,26 +82,13 @@ public class Cse465_hw1 {
 	
 	public void register(String id) throws Exception{
             boolean validCheck = true;
-            int n=0;
-            Scanner sc = new Scanner(System.in);
-            System.out.println("N value: ");
-            String n_str = sc.nextLine();
-            if(n_str.equals("")){
-                    System.out.println("\nInvalid response. Try Agian.\n");
-            }
-            else if(isInt(n_str)){
-                    n = Integer.parseInt(n_str);
-                    if(n <= 1){
-                        System.out.println("\nInvalid response. Try Agian.\n");
-                    } else {}
-            }
-            else {
-                    System.out.println("\nInvalid response. Try Agian.\n");
-            }
             
-            System.out.println(validCheck);
+            // set n value to 5
+            int n=5;
+            Scanner sc = new Scanner(System.in);
+            
             while(validCheck){		
-                System.out.println("Enter secret seed: ");
+                System.out.println("N value is 5, Enter secret seed: ");
                 sc = new Scanner(System.in);
                 String seed = sc.nextLine();
                 ArrayList<String> pList = new ArrayList<String>();
@@ -118,9 +101,7 @@ public class Cse465_hw1 {
                 passwordList =  pList.toArray();
                 passwordList = reverse(passwordList);
                 String pChain = (String) passwordList[0];
-                //only save the the nth encrypted password to db
                 db.put(id,pChain);
-                //Used for debug, not a good idea to keep password chain on the system
                 skeys.put(id, (String[]) passwordList);
                 printList(passwordList);
                 passwordLength = passwordList.length;
@@ -156,7 +137,7 @@ public class Cse465_hw1 {
 			if(isInt(menu)){
 				menuInt = Integer.parseInt(menu);
 				if(menuInt == 1){
-					System.out.println("Enter new ID name: ");
+					System.out.println("Enter new User: ");
 					@SuppressWarnings("resource")
 					Scanner scanner = new Scanner(System.in);
 					String id = scanner.nextLine();
@@ -164,27 +145,26 @@ public class Cse465_hw1 {
                                         break;
 				}
 				else if(menuInt == 2){
-					System.out.println("Goodbye\n");
 					System.exit(0);
 				}
                                 else if(menuInt == 3) {
                                     break;
                                 }
 				else{
-					System.out.println("\nInvalid response.Try again\n");
+					System.out.println("\nWrong!\n");
 					//flag = true;
 				}
 			}
 		}
-	}//End method mainMenu
+	}
 	
-	//The secret cryptographic hashing algorithm(SHA-256)
+	//hashing algorithm(SHA-256)
 	public static String secret(String plain) throws Exception{
 		String result="";
 		byte[] hashBytes = md.digest(plain.getBytes("UTF-8"));
 		result = DatatypeConverter.printHexBinary(hashBytes);
 		return result;
-	}//end method secret
+	}
 	
 	public static Object[] reverse(Object[] str){
 		Object[] result = new String[str.length];
@@ -194,21 +174,19 @@ public class Cse465_hw1 {
 			ctr++;
 		}
 		return result;
-	}// end method reverse
+	}
 	
 	public static boolean authenticate(String id, String password) throws Exception{
-		//After running the attempted password through the secret cryptographic hashing algorithm, if it equals the previous
-		//password then return true and replace previous password with attempted password,moving down the password chain.
+                // deletion works by replacement, in the event correct password entered.
 		if(secret(password).equals(db.get(id))){
 			db.replace(id, password);
 			return true;
 		}
 		return false;
-	}//end method authenticate
+	}
 	
 	public static String getSeed(String id){
 		int size = skeys.get(id).length;
 		return skeys.get(id)[size-1];
-	}// end method getSeed
-	
-}//end class Skey 
+        }
+}
