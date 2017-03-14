@@ -1,0 +1,9 @@
+Limitations of S/Key:
+
+Secret keys must be transmitted (either manually or through a communication channel), 
+and there may be a chance that an enemy can discover the secret keys during their transmission.
+
+Authentication requires sharing of some secret and sometimes third party trust is required.  
+
+Secruity is placed on the reversing of the cryptographic hashing functions. Meaning that once you 
+obtain the algorithm, the security of the function is now useless as you can always compromise the password.
