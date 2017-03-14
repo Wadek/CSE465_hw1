@@ -54,8 +54,7 @@ public class Cse465_hw1 {
 					if(authenticate(id,passwordAttempt)){
 						isPassCorrect =true;
 						for(int i = index; i < skeys.get(id).length;i++) {
-                                                    System.out.println("(i = "+ i +") "+skeys.get(id)[i]);
-                                                    
+                                                    System.out.println("(i = "+ i +") "+skeys.get(id)[i]);                                                    
                                                 }                                               
 						if(db.get(id).equals(getSeed(id))){
 							System.out.println("All passwords used. Register new user.");
@@ -69,8 +68,7 @@ public class Cse465_hw1 {
 						System.out.println("Attempt #: " + challenge + " out of 3");
 						challenge++;
 						System.out.println("Enter password (i="+ index  +"): \n");
-					}
-					
+					}					
 				}//end while
 			}else{
 				//register(id);
@@ -168,16 +166,16 @@ public class Cse465_hw1 {
 	
 	public static Object[] reverse(Object[] str){
 		Object[] result = new String[str.length];
-		int ctr = 0;
+		int rts = 0;
 		for( int i = str.length-1; i >= 0; i-- ){
-			result[ctr] = str[i];
-			ctr++;
+			result[rts] = str[i];
+			rts++;
 		}
 		return result;
 	}
 	
+        // deletion works by replacement, in the event correct password entered.
 	public static boolean authenticate(String id, String password) throws Exception{
-                // deletion works by replacement, in the event correct password entered.
 		if(secret(password).equals(db.get(id))){
 			db.replace(id, password);
 			return true;
