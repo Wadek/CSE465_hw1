@@ -7,8 +7,7 @@ import java.util.Scanner;
 import javax.xml.bind.DatatypeConverter;
 
 public class Cse465_hw1 {
-        Object[] passwordList;
-        int passwordLength = 0;
+
 	
         static Hashtable< String, String > db = new Hashtable< String,String >();
 	static Hashtable<String,String[]> skeys = new Hashtable<String, String[]>();
@@ -96,13 +95,12 @@ public class Cse465_hw1 {
                 }
 
                 //reverse password chain
-                passwordList =  pList.toArray();
+                Object[] passwordList = pList.toArray();
                 passwordList = reverse(passwordList);
                 String pChain = (String) passwordList[0];
                 db.put(id,pChain);
                 skeys.put(id, (String[]) passwordList);
                 printList(passwordList);
-                passwordLength = passwordList.length;
                 validCheck = false;
                 mainMenu();
             }
